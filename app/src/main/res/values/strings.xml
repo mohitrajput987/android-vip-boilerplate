@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Movies Buddy</string>
+    <string name="tap_to_view_details">Tap to view details</string>
+    <string name="unexpected_error_occurred">An unexpected error occurred. Please try after some time.</string>
+    <string name="no_movie_found">No movie found</string>
+    <string name="no_network">No network</string>
+    <string name="network_error">"It seems like you have no network connection. Please try again once your network
+        resumes.
+    </string>
+    <string name="no_internet_connected">You are not connected with internet. Please connect to internet and try
+        again.
+    </string>
+    <string name="retry">Retry</string>
+    <string name="exit">Exit</string>
+    <string name="movie_poster">Movie Poster</string>
+</resources>

@@ -1,0 +1,38 @@
+ext {
+    //Android
+    minSdkVersion = 21
+    targetSdkVersion = 28
+    compileSdkVersion = targetSdkVersion
+    testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    androidxLibVersion = "1.0.0"
+    okHttpLibVersion = "3.14.0"
+
+    //Unit testing
+    junit = "junit:junit:4.12"
+    androidTestRunner = "androidx.test:runner:1.1.0-alpha4"
+    espresso = "androidx.test.espresso:espresso-core:3.1.0-alpha4"
+    mockito = "org.mockito:mockito-all:1.10.19"
+
+    //Support Library & UI
+    constraintLayout = "androidx.constraintlayout:constraintlayout:1.1.3"
+    supportCore = "androidx.core:core-ktx:1.1.0-alpha05"
+    supportAppCompat = "androidx.appcompat:appcompat:$androidxLibVersion"
+    googleMaterial = "com.google.android.material:material:$androidxLibVersion"
+    glide = "com.github.bumptech.glide:glide:3.7.0"
+
+    // RxJava lib
+    rxAndroid = "io.reactivex.rxjava2:rxandroid:2.0.1"
+    rxJava = "io.reactivex.rxjava2:rxjava:2.1.8"
+    rxJavaRetrofitAdapter = "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0"
+
+    //Retrofit
+    retrofit = "com.squareup.retrofit2:retrofit:2.4.0"
+    okHttp = "com.squareup.okhttp3:okhttp:$okHttpLibVersion"
+    okHttpLoggingInterceptor = "com.squareup.okhttp3:logging-interceptor:$okHttpLibVersion"
+    retrofitGsonConverter = "com.squareup.retrofit2:converter-gson:2.3.0"
+    retrofitScalarsConverter = "com.squareup.retrofit2:converter-scalars:2.3.0"
+
+    //Others
+    sentry = "io.sentry:sentry-android:1.7.16"
+    sl4j = "org.slf4j:slf4j-nop:1.7.25"
+}

@@ -1,0 +1,152 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+apply plugin: 'io.sentry.android.gradle'
+
+apply plugin: 'org.sonarqube'
+
+apply from: '../jacoco.gradle'
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    defaultConfig {
+        applicationId "com.otb.vipboilerplate"
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode 1
+        versionName "0.0.1"
+        testInstrumentationRunner rootProject.ext.testInstrumentationRunner
+    }
+
+    flavorDimensions "environment"
+    productFlavors {
+        dev {
+            dimension "environment"
+            buildConfigField 'String', 'SERVER_BASE_URL', '"https://api.themoviedb.org/3/"'
+        }
+
+        qa {
+            dimension "environment"
+            buildConfigField 'String', 'SERVER_BASE_URL', '"https://api.themoviedb.org/3/"'
+        }
+
+        uat {
+            dimension "environment"
+            buildConfigField 'String', 'SERVER_BASE_URL', '"https://api.themoviedb.org/3/"'
+        }
+
+        prod {
+            dimension "environment"
+            buildConfigField 'String', 'SERVER_BASE_URL', '"https://api.themoviedb.org/3/"'
+        }
+    }
+
+    buildTypes {
+        debug {
+            buildConfigField 'String', 'SENTRY_DSN', '"https://f46528ed6fad44b38ca1c602b31cb461@sentry.io/1468197"'
+            testCoverageEnabled = true
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            buildConfigField 'String', 'SENTRY_DSN', '"https://f46528ed6fad44b38ca1c602b31cb461@sentry.io/1468197"'
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    androidExtensions {
+        experimental = true
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+        androidTest.java.srcDirs += 'src/androidTest/kotlin'
+    }
+
+    sentry {
+        // Disables or enables the automatic configuration of proguard
+        // for Sentry.  This injects a default config for proguard so
+        // you don't need to do it manually.
+        autoProguardConfig true
+
+        // Enables or disables the automatic upload of mapping files
+        // during a build.  If you disable this you'll need to manually
+        // upload the mapping files with sentry-cli when you do a release.
+        autoUpload true
+    }
+
+    android {
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_8
+            targetCompatibility JavaVersion.VERSION_1_8
+        }
+    }
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+
+    //Unit testing
+    testImplementation rootProject.ext.junit
+    androidTestImplementation rootProject.ext.androidTestRunner
+    androidTestImplementation rootProject.ext.espresso
+    testImplementation rootProject.ext.mockito
+
+    //Support Library & UI
+    implementation rootProject.ext.constraintLayout
+    implementation rootProject.ext.supportAppCompat
+    implementation rootProject.ext.googleMaterial
+    implementation rootProject.ext.supportCore
+    implementation rootProject.ext.glide
+
+    // Dagger dependency for DI
+    implementation 'com.google.dagger:dagger:2.16'
+    annotationProcessor "com.google.dagger:dagger-compiler:2.16"
+    implementation 'javax.inject:javax.inject:1'
+
+    // RxJava lib
+    implementation rootProject.ext.rxAndroid
+    implementation rootProject.ext.rxJava
+    implementation rootProject.ext.rxJavaRetrofitAdapter
+
+    //Retrofit
+    implementation(rootProject.ext.retrofit) {
+        exclude module: 'okhttp'
+    }
+    implementation rootProject.ext.okHttp
+    implementation rootProject.ext.okHttpLoggingInterceptor
+    implementation rootProject.ext.retrofitGsonConverter
+    implementation rootProject.ext.retrofitScalarsConverter
+
+    //Memory leaks
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:1.6.3'
+    releaseImplementation 'com.squareup.leakcanary:leakcanary-android-no-op:1.6.3'
+    debugImplementation 'com.squareup.leakcanary:leakcanary-support-fragment:1.6.3'
+
+    //Others
+    implementation rootProject.ext.sentry
+    implementation rootProject.ext.sl4j
+}
+
+
+sonarqube {
+    properties {
+        def libraries = project.android.sdkDirectory.getPath() + "/platforms/android-23/android.jar"
+        property "sonar.sources", "src/main/java"
+        property "sonar.binaries", "build/intermediates/classes/debug"
+        property "sonar.libraries", libraries
+        property "sonar.tests", "src/test/java, src/androidTest/java"
+        property "sonar.java.test.binaries", "build/intermediates/class/debug"
+        property "sonar.java.test.libraries", libraries
+        property "sonar.jacoco.reportPath", "build/jacoco/testDebugUnitTest.exec"
+        property "sonar.java.coveragePlugin", "jacoco"
+        property "sonar.junit.reportsPath", "build/test-results/debug"
+        property "sonar.android.lint.report", "build/outputs/lint-results"
+    }
+}
